@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
-    @Autowired
-    private HomeService homeService;
+//    @Autowired
+    private final HomeService homeService;
+
+    public HomeController(HomeService homeService){
+        this.homeService=homeService;
+    }
 
     @GetMapping("/")
     public String home(){
