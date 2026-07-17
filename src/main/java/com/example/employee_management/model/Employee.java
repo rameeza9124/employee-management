@@ -1,15 +1,12 @@
 package com.example.employee_management.model;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-public class EmployeeModel {
+public class Employee {
     private int id;
     private String name;
     private String department;
     private double salary;
 
-    public EmployeeModel(int id, String name, String department, double salary) {
+    public Employee(int id, String name, String department, double salary) {
         this.id = id;
         this.name = name;
         this.department = department;
