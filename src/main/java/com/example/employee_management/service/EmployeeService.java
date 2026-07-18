@@ -20,6 +20,15 @@ public class EmployeeService {
         employees.add(emp1);
         return employees;
     }
+    public Employee getEmployeeById(Long id){
+        List<Employee>employees = getEmployees();
+        for( Employee emp:employees){
+            if(emp.getId()==(id)){
+                return emp;
+            }
+        }
+        return null;
+    }
 
 
 
