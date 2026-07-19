@@ -1,5 +1,6 @@
 package com.example.employee_management.service;
 
+import com.example.employee_management.dto.EmployeeResponseDto;
 import org.springframework.stereotype.Service;
 import com.example.employee_management.model.Employee;
 
@@ -30,6 +31,27 @@ public class EmployeeService {
         return null;
     }
 
+    private EmployeeResponseDto maptoResponseDto(Employee employee){
+        return new EmployeeResponseDto(
+                employee.getId(),
+                employee.getName(),
+                employee.getDepartment(),
+                employee.getSalary()
+        );
+    }
+
+    public List<EmployeeResponseDto> getEmployeeResponses() {
+
+        List<Employee> employees = getEmployees();
+
+        List<EmployeeResponseDto> response = new ArrayList<>();
+
+        for (Employee emp : employees) {
+            response.add(maptoResponseDto(emp));
+        }
+
+        return response;
+    }
 
 
 }

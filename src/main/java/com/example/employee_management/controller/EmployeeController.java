@@ -1,5 +1,7 @@
 package com.example.employee_management.controller;
 import java.util.List;
+
+import com.example.employee_management.dto.EmployeeResponseDto;
 import com.example.employee_management.model.Employee;
 import com.example.employee_management.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,8 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getEmployees(){
-        return employeeService.getEmployees();
+    public List<EmployeeResponseDto> getEmployees(){
+        return employeeService.getEmployeeResponses();
     }
 
     @GetMapping("/{id}")
