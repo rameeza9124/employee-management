@@ -1,9 +1,11 @@
 package com.example.employee_management.controller;
 import java.util.List;
 
+import com.example.employee_management.dto.EmployeeRequestDto;
 import com.example.employee_management.dto.EmployeeResponseDto;
 import com.example.employee_management.model.Employee;
 import com.example.employee_management.service.EmployeeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,15 @@ public class EmployeeController {
         }
 
         return ResponseEntity.ok(employee);
+    }
+
+    @PostMapping
+    public ResponseEntity<EmployeeResponseDto> createEmployee(
+            @RequestBody EmployeeRequestDto requestDto
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(employeeService.createEmployee(requestDto));
     }
 //    @GetMapping
 //    public String getemployees(){
