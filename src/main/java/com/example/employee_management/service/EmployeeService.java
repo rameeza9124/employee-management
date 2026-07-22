@@ -38,7 +38,7 @@ public class EmployeeService {
 //        employees.add(emp1);
 //        return employees;
 //    }
-    public Employee getEmployeeById(Long id){
+    public Employee getEmployeeById(int id){
         List<Employee>employees = getEmployee();
         for( Employee emp:employees){
             if(emp.getId()==(id)){
@@ -79,7 +79,25 @@ public class EmployeeService {
         employees.add(employee);
         return maptoResponseDto(employee);
     }
+    public EmployeeResponseDto updateEmployee(int id, EmployeeRequestDto requestDto){
+        for(Employee employee:employees){
+            if (employee.getId()==id){
+                employee.setName(requestDto.getName());
+                employee.setDepartment(requestDto.getDepartment());
+                employee.setSalary(requestDto.getSalary());
+                return maptoResponseDto(employee);
 
-
-
+            }
+        }
+        return null;
+    }
+    public boolean deleteEmployee(int id){
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).getId()==(id)) {
+                employees.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 }

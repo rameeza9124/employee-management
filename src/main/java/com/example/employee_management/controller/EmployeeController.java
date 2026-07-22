@@ -25,7 +25,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
 
         Employee employee = employeeService.getEmployeeById(id);
 
@@ -44,38 +44,25 @@ public class EmployeeController {
                 .status(HttpStatus.CREATED)
                 .body(employeeService.createEmployee(requestDto));
     }
-//    @GetMapping
-//    public String getemployees(){
-//        return "All Employees";
-//    }
-//
-//    @GetMapping("/about")
-//    public String about(){
-//        return "Employee Module";
-//    }
-//
-//    @PostMapping
-//    public String addEmployee(){
-//        return "Employee Added";
-//    }
-//
-//    @GetMapping("/{id}")
-//    public String getemployeeid(@PathVariable int id){
-//        return "Employee Id:" +id;
-//    }
-//
-//    @GetMapping("/{department}/{id}")
-//    public String employee(@PathVariable String department, @PathVariable int id){
-//        return department +" "+id;
-//    }
-//
-//    @GetMapping("/search")
-//    public String searchemployee(@RequestParam String department, @RequestParam String city){
-//        return department + " " +city;
-//    }
-//
-//    @PostMapping("/create")
-//    public Employee createemployee(@RequestBody Employee employee ){
-//        return employee;
-//    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable int id,
+                                                              @RequestBody EmployeeRequestDto requestDto){
+        EmployeeResponseDto response = employeeService.updateEmployee(id, requestDto);
+        if(response == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable int id){
+        boolean response = employeeService.deleteEmployee(id);
+        if (response==false){
+            return ResponseEntity.notFound().build();
+
+        }
+        return ResponseEntity.noContent().build();
+    }
+
 }
