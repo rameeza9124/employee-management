@@ -1,7 +1,13 @@
 package com.example.employee_management.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="employees")
 public class Employee {
+    @Id
     private int id;
+    @Column(name="employee_name")
     private String name;
     private String department;
     private double salary;

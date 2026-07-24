@@ -1,8 +1,20 @@
 package com.example.employee_management.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class EmployeeRequestDto {
+
+    @NotBlank(message= "Employee name is requires")
+    @Size(min=3, max= 50, message= "Name must be Between 3 and 50 characters")
     private String name;
+
+    @NotBlank(message = "Department name is required")
+    @Size(min=2, max=30, message= "department size must be between 2 to 30 characters")
     private String department;
+
+    @Positive(message= "Salary must be greater than zero")
     private Double salary;
 
     public EmployeeRequestDto(){}
