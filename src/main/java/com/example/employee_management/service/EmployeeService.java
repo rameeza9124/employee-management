@@ -2,6 +2,7 @@ package com.example.employee_management.service;
 
 import com.example.employee_management.dto.EmployeeRequestDto;
 import com.example.employee_management.dto.EmployeeResponseDto;
+import com.example.employee_management.exception.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 import com.example.employee_management.model.Employee;
 
@@ -45,7 +46,7 @@ public class EmployeeService {
                 return emp;
             }
         }
-        return null;
+        throw new EmployeeNotFoundException("Employee with ID "+id+" not found.");
     }
 
     private EmployeeResponseDto maptoResponseDto(Employee employee){
