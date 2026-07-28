@@ -3,6 +3,7 @@ package com.example.employee_management.service;
 import com.example.employee_management.dto.EmployeeRequestDto;
 import com.example.employee_management.dto.EmployeeResponseDto;
 import com.example.employee_management.exception.EmployeeNotFoundException;
+import com.example.employee_management.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 import com.example.employee_management.model.Employee;
 
@@ -11,45 +12,20 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
-    private final List<Employee> employees = new ArrayList<>();
-    public EmployeeService(){
-        employees.add(
-                new Employee(
-                        1,
-                        "Rahul",
-                        "IT",
-                        50000
-                )
-        );
-    }
-    public List<Employee>getEmployee(){
-        return employees;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
 
-
-//    public List<Employee> getEmployees(){
-//        List<Employee> employees = new ArrayList<>();
-//        Employee emp1 = new Employee(
-//                1,
-//                "Rahul",
-//                "IT",
-//                50000
-//        );
-//        employees.add(emp1);
-//        return employees;
-//    }
-    public Employee getEmployeeById(int id){
-        List<Employee>employees = getEmployee();
-        for( Employee emp:employees){
-            if(emp.getId()==(id)){
-                return emp;
-            }
-        }
-        throw new EmployeeNotFoundException("Employee with ID "+id+" not found.");
+    public Employee getEmployeeById(int id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() ->
+                        new EmployeeNotFoundException("Employee with ID " + id + " not found."));
     }
 
-    private EmployeeResponseDto maptoResponseDto(Employee employee){
+    private EmployeeResponseDto mapToResponseDto(Employee employee) {
         return new EmployeeResponseDto(
                 employee.getId(),
                 employee.getName(),
@@ -60,45 +36,49 @@ public class EmployeeService {
 
     public List<EmployeeResponseDto> getEmployeeResponses() {
 
-        List<Employee> employees = getEmployee();
+        List<Employee> employees = employeeRepository.findAll();
 
         List<EmployeeResponseDto> response = new ArrayList<>();
 
         for (Employee emp : employees) {
-            response.add(maptoResponseDto(emp));
+            response.add(mapToResponseDto(emp));
         }
 
         return response;
     }
 
-    public EmployeeResponseDto createEmployee(EmployeeRequestDto requestDto){
+    public EmployeeResponseDto createEmployee(EmployeeRequestDto requestDto) {
         Employee employee = new Employee();
         employee.setName(requestDto.getName());
         employee.setDepartment(requestDto.getDepartment());
         employee.setSalary(requestDto.getSalary());
-        employee.setId((int) (employees.size() + 1));
-        employees.add(employee);
-        return maptoResponseDto(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return mapToResponseDto(savedEmployee);
     }
-    public EmployeeResponseDto updateEmployee(int id, EmployeeRequestDto requestDto){
-        for(Employee employee:employees){
-            if (employee.getId()==id){
-                employee.setName(requestDto.getName());
-                employee.setDepartment(requestDto.getDepartment());
-                employee.setSalary(requestDto.getSalary());
-                return maptoResponseDto(employee);
 
-            }
-        }
-        return null;
+    public EmployeeResponseDto updateEmployee(int id, EmployeeRequestDto requestDto) {
+
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() ->
+                        new EmployeeNotFoundException("Employee with ID " + id + " not found."));
+
+        employee.setName(requestDto.getName());
+        employee.setDepartment(requestDto.getDepartment());
+        employee.setSalary(requestDto.getSalary());
+
+        Employee updatedEmployee = employeeRepository.save(employee);
+
+        return mapToResponseDto(updatedEmployee);
     }
-    public boolean deleteEmployee(int id){
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getId()==(id)) {
-                employees.remove(i);
-                return true;
-            }
+
+    public boolean deleteEmployee(int id) {
+
+        if (!employeeRepository.existsById(id)) {
+            return false;
         }
-        return false;
+
+        employeeRepository.deleteById(id);
+
+        return true;
     }
 }
