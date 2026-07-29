@@ -3,6 +3,7 @@ package com.example.employee_management.service;
 import com.example.employee_management.dto.EmployeeRequestDto;
 import com.example.employee_management.dto.EmployeeResponseDto;
 import com.example.employee_management.exception.EmployeeNotFoundException;
+import com.example.employee_management.model.EmployeeDocument;
 import com.example.employee_management.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 import com.example.employee_management.model.Employee;
@@ -30,7 +31,11 @@ public class EmployeeService {
                 employee.getId(),
                 employee.getName(),
                 employee.getDepartment(),
-                employee.getSalary()
+                employee.getSalary(),
+                employee.getEmployeeDocument().getAadharNumber(),
+                employee.getEmployeeDocument().getPanNumber(),
+                employee.getEmployeeDocument().getPassportNumber(),
+                employee.getEmployeeDocument().getDrivingLicenseNumber()
         );
     }
 
@@ -49,9 +54,17 @@ public class EmployeeService {
 
     public EmployeeResponseDto createEmployee(EmployeeRequestDto requestDto) {
         Employee employee = new Employee();
+        EmployeeDocument employeeDocument= new EmployeeDocument();
         employee.setName(requestDto.getName());
         employee.setDepartment(requestDto.getDepartment());
         employee.setSalary(requestDto.getSalary());
+        employeeDocument.setAadharNumber(requestDto.getAadharNumber());
+        employeeDocument.setPanNumber(requestDto.getPanNumber());
+        employeeDocument.setPassportNumber(requestDto.getPassportNumber());
+        employeeDocument.setDrivingLicenseNumber(requestDto.getDrivingLicenseNumber());
+
+        employee.setEmployeeDocument(employeeDocument);
+
         Employee savedEmployee = employeeRepository.save(employee);
         return mapToResponseDto(savedEmployee);
     }
@@ -66,6 +79,11 @@ public class EmployeeService {
         employee.setDepartment(requestDto.getDepartment());
         employee.setSalary(requestDto.getSalary());
 
+        EmployeeDocument employeeDocument =employee.getEmployeeDocument();
+        employeeDocument.setAadharNumber(requestDto.getAadharNumber());
+        employeeDocument.setPanNumber(requestDto.getPanNumber());
+        employeeDocument.setPassportNumber(requestDto.getPassportNumber());
+        employeeDocument.setDrivingLicenseNumber(requestDto.getDrivingLicenseNumber());
         Employee updatedEmployee = employeeRepository.save(employee);
 
         return mapToResponseDto(updatedEmployee);

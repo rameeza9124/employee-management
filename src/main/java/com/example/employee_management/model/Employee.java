@@ -13,17 +13,19 @@ public class Employee {
     private String department;
     private double salary;
 
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="document_id")
     private EmployeeDocument employeeDocument;
 
     public Employee(){}
 
-    public Employee(Integer id, String name, String department, double salary) {
+    public Employee(Integer id, String name, String department, double salary, EmployeeDocument employeeDocument) {
         this.id = id;
         this.name = name;
         this.department = department;
         this.salary = salary;
+        this.employeeDocument = employeeDocument;
     }
 
     public Integer getId() {
@@ -65,4 +67,6 @@ public class Employee {
     public void setEmployeeDocument(EmployeeDocument employeeDocument) {
         this.employeeDocument = employeeDocument;
     }
+
+
 }
