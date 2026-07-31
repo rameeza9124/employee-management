@@ -1,19 +1,24 @@
 package com.example.employee_management.dto;
 
 public class EmployeeResponseDto {
-    private int id;
+    private Integer id;
     private String name;
-    private String department;
-    private double salary;
+    private Integer departmentId;
+    private String departmentName;
+    private Double salary;
     private String aadharNumber;
     private String panNumber;
     private String passportNumber;
     private String drivingLicenseNumber;
 
-    public EmployeeResponseDto(int id, String name, String department, double salary, String aadharNumber, String panNumber, String passportNumber, String drivingLicenseNumber) {
+    public EmployeeResponseDto() {
+    }
+
+    public EmployeeResponseDto(Integer id, String name, Integer departmentId, String departmentName, Double salary, String aadharNumber, String panNumber, String passportNumber, String drivingLicenseNumber) {
         this.id = id;
         this.name = name;
-        this.department = department;
+        this.departmentId = departmentId;
+        this.departmentName = departmentName;
         this.salary = salary;
         this.aadharNumber = aadharNumber;
         this.panNumber = panNumber;
@@ -21,11 +26,11 @@ public class EmployeeResponseDto {
         this.drivingLicenseNumber = drivingLicenseNumber;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -37,19 +42,27 @@ public class EmployeeResponseDto {
         this.name = name;
     }
 
-    public String getDepartment() {
-        return department;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public double getSalary() {
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 

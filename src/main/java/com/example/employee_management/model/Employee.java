@@ -10,7 +10,10 @@ public class Employee {
     private Integer id;
     @Column(name="employee_name")
     private String name;
-    private String department;
+
+    @ManyToOne
+    @JoinColumn(name= "department_id")
+    private Department department;
     private double salary;
 
 
@@ -18,9 +21,11 @@ public class Employee {
     @JoinColumn(name="document_id")
     private EmployeeDocument employeeDocument;
 
+
+
     public Employee(){}
 
-    public Employee(Integer id, String name, String department, double salary, EmployeeDocument employeeDocument) {
+    public Employee(Integer id, String name, Department department, double salary, EmployeeDocument employeeDocument) {
         this.id = id;
         this.name = name;
         this.department = department;
@@ -44,11 +49,11 @@ public class Employee {
         this.name = name;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 

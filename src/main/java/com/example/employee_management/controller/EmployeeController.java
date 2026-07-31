@@ -22,18 +22,13 @@ public class EmployeeController {
 
     @GetMapping
     public List<EmployeeResponseDto> getEmployees(){
-        return employeeService.getEmployeeResponses();
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
+    public ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable Integer id) {
 
-        Employee employee = employeeService.getEmployeeById(id);
-
-        if (employee == null) {
-            return ResponseEntity.notFound().build();
-        }
-
+        EmployeeResponseDto employee = employeeService.getEmployeeById(id);
         return ResponseEntity.ok(employee);
     }
 
@@ -48,22 +43,15 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable int id,
+    public ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable Integer id,
                                                               @RequestBody EmployeeRequestDto requestDto){
         EmployeeResponseDto response = employeeService.updateEmployee(id, requestDto);
-        if(response == null){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable int id){
-        boolean response = employeeService.deleteEmployee(id);
-        if (response==false){
-            return ResponseEntity.notFound().build();
-
-        }
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Integer id){
+        employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
     }
 

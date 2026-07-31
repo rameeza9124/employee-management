@@ -1,18 +1,18 @@
 package com.example.employee_management.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public class EmployeeRequestDto {
 
-    @NotBlank(message= "Employee name is requires")
+    @NotBlank(message= "Employee name is required")
     @Size(min=3, max= 50, message= "Name must be Between 3 and 50 characters")
     private String name;
 
-    @NotBlank(message = "Department name is required")
-    @Size(min=2, max=30, message= "department size must be between 2 to 30 characters")
-    private String department;
+    @NotNull(message = "DepartmentId is required")
+    private Integer departmentId;
 
     @Positive(message= "Salary must be greater than zero")
     private Double salary;
@@ -40,12 +40,12 @@ public class EmployeeRequestDto {
         this.name = name;
     }
 
-    public String getDepartment() {
-        return department;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
     public Double getSalary() {
@@ -88,9 +88,9 @@ public class EmployeeRequestDto {
         this.drivingLicenseNumber = drivingLicenseNumber;
     }
 
-    public EmployeeRequestDto(String name, String department, Double salary, String aadharNumber, String panNumber, String passportNumber, String drivingLicenseNumber) {
+    public EmployeeRequestDto(String name, Integer departmentId, Double salary, String aadharNumber, String panNumber, String passportNumber, String drivingLicenseNumber) {
         this.name = name;
-        this.department = department;
+        this.departmentId = departmentId;
         this.salary = salary;
         this.aadharNumber = aadharNumber;
         this.panNumber = panNumber;

@@ -21,4 +21,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+
+    @ExceptionHandler(DepartmentNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleDepartmentNotFoundException(
+            DepartmentNotFoundException ex) {
+
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
+                LocalDateTime.now().toString(),
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMessage()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
 }
