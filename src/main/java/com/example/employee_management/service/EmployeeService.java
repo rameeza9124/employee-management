@@ -8,6 +8,8 @@ import com.example.employee_management.model.Department;
 import com.example.employee_management.model.EmployeeDocument;
 import com.example.employee_management.repository.DepartmentRepository;
 import com.example.employee_management.repository.EmployeeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.example.employee_management.model.Employee;
 
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
+    private static final Logger logger =
+            LoggerFactory.getLogger(EmployeeService.class);
     private final EmployeeRepository employeeRepository;
 //    public EmployeeService(EmployeeRepository employeeRepository) {
 //        this.employeeRepository = employeeRepository;
@@ -29,9 +33,13 @@ public class EmployeeService {
     }
 
     public EmployeeResponseDto getEmployeeById(Integer id) {
+        logger.info("Fetching employee with ID: {}", id);
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() ->
-                        new EmployeeNotFoundException("Employee with ID " + id + " not found."));
+                        new EmployeeNotFoundException("Employee with ID " + id + " not found.")
+                );
+//        logger.info("Employee retrieved successfully with ID: {}", employee.getId());
+
         return mapToResponseDto(employee);
     }
 
@@ -51,8 +59,11 @@ public class EmployeeService {
     }
 
     public List<EmployeeResponseDto> getAllEmployees() {
+        logger.info("Fetching all employees.");
+
 
         List<Employee> employees = employeeRepository.findAll();
+        logger.info("Retrieved {} employees from the database.", employees.size());
 
         List<EmployeeResponseDto> response = new ArrayList<>();
 
@@ -64,6 +75,7 @@ public class EmployeeService {
     }
 
     public EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto) {
+        logger.info("Creating employee with name: {}", employeeRequestDto.getName());
         Employee employee = new Employee();
         EmployeeDocument employeeDocument= new EmployeeDocument();
         employee.setName(employeeRequestDto.getName());
@@ -86,10 +98,16 @@ public class EmployeeService {
         employee.setEmployeeDocument(employeeDocument);
 
         Employee savedEmployee = employeeRepository.save(employee);
+        logger.info(
+                "Employee '{}' created successfully with ID: {}",
+                savedEmployee.getName(),
+                savedEmployee.getId()
+        );
         return mapToResponseDto(savedEmployee);
     }
 
     public EmployeeResponseDto updateEmployee(Integer id, EmployeeRequestDto employeeRequestDto) {
+        logger.info("Updating employee with id:{}",id);
 
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() ->
@@ -112,10 +130,13 @@ public class EmployeeService {
         employeeDocument.setDrivingLicenseNumber(employeeRequestDto.getDrivingLicenseNumber());
         Employee updatedEmployee = employeeRepository.save(employee);
 
+        logger.info("Employee with id '{}' updated successfully ",updatedEmployee.getId());
+
         return mapToResponseDto(updatedEmployee);
     }
 
     public void deleteEmployee(Integer id) {
+        logger.info("Deleting Employee with ID:{}",id);
 
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() ->
@@ -123,5 +144,7 @@ public class EmployeeService {
                                 "Employee with ID " + id + " not found."));
 
         employeeRepository.delete(employee);
+        logger.info("Employee with Id '{}' deleted successfully",id);
+
     }
 }
