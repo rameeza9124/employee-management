@@ -147,4 +147,29 @@ public class EmployeeService {
         logger.info("Employee with Id '{}' deleted successfully",id);
 
     }
+
+    public void testLazyLoading(Integer id) {
+
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
+
+        System.out.println(employee.getName());
+
+        // Uncomment later
+         System.out.println(employee.getDepartment().getDepartmentName());
+    }
+
+    public void testJoinFetch() {
+
+        List<Employee> employees = employeeRepository.findAllWithDepartment();
+
+        for (Employee employee : employees) {
+
+            System.out.println(employee.getName());
+
+            System.out.println(employee.getDepartment().getDepartmentName());
+
+        }
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.employee_management.model;
 
 import jakarta.persistence.*;
+import org.hibernate.sql.results.graph.Fetch;
 
 @Entity
 @Table(name="employees")
@@ -11,7 +12,7 @@ public class Employee {
     @Column(name="employee_name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name= "department_id")
     private Department department;
     private double salary;

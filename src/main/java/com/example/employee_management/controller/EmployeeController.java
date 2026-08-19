@@ -31,17 +31,18 @@ public class EmployeeController {
         logger.info("Received request to fetch employee with ID: {}", id);
 
         EmployeeResponseDto employee = employeeService.getEmployeeById(id);
-        return ResponseEntity.ok(employee);
+        return ResponseEntity.ok().header("X-Employee-Id", String.valueOf(id)).body(employee);
     }
 
     @PostMapping
     public ResponseEntity<EmployeeResponseDto> createEmployee(
             @Valid @RequestBody EmployeeRequestDto requestDto
     ) {
-        System.out.println("Controller method executed!");
+        EmployeeResponseDto response = employeeService.createEmployee(requestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(employeeService.createEmployee(requestDto));
+                .header("Location", "/employees/" + response.getId())
+                .body(response);
     }
 
     @PutMapping("/{id}")
@@ -57,6 +58,23 @@ public class EmployeeController {
         logger.info("Received request to delete employee with ID: {}", id);
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/test-lazy/{id}")
+    public String testLazyLoading(@PathVariable Integer id) {
+
+        employeeService.testLazyLoading(id);
+
+        return "Check Console";
+    }
+
+    @GetMapping("/join-fetch")
+    public String testJoinFetch() {
+
+        employeeService.testJoinFetch();
+
+        return "Check Console";
+
     }
 
 }
